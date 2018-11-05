@@ -13,9 +13,11 @@
                 <i class="fa fa-cart-plus"></i> Recarregar
             </a>
 
-            <a href="#" class="btn btn-danger"> 
-                <i class="fa fa-cart-plus"></i> Sacar
-            </a>
+            @if ($amount > 0)
+                <a href="{{ route('balance.withdraw') }}" class="btn btn-danger"> 
+                    <i class="fa fa-cart-plus"></i> Sacar
+                </a>
+            @endif
         </div>
 
         <div class="box-body">
