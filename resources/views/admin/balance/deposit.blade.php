@@ -11,6 +11,9 @@
 
         <div class="box-body">
             <div class="col-xs-12 col-md-4 formDeposito">
+
+                @include('admin.includes.alerts')
+
                 <form method="POST" action="{{ route('deposit.store') }}">
                     {!! csrf_field() !!}
                     

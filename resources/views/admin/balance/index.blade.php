@@ -19,6 +19,8 @@
         </div>
 
         <div class="box-body">
+            @include('admin.includes.alerts')
+
             <div class="col-xs-12 col-md-4 blocoSaldo">
                 <div class="small-box bg-green">
                     <div class="inner">
