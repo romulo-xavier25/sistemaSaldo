@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Balance;
+use App\Models\Historic;
 use App\Http\Requests\MoneyValidationFormRequest;
 use App\User;
 
@@ -13,17 +13,20 @@ class BalanceController extends Controller
 
     private $totalPaginacao = 5;
 
-    public function index(){
+    public function index()
+    {
         $balance = auth()->user()->balance;
         $amount = $balance ? $balance->amount : 0;
         return view('admin.balance.index', compact('amount'));
     }
 
-    public function deposit(){
+    public function deposit()
+    {
         return view('admin.balance.deposit');
     }
 
-    public function depositStore(MoneyValidationFormRequest $request){
+    public function depositStore(MoneyValidationFormRequest $request)
+    {
         $balance = auth()->user()->balance()->firstOrCreate([]);
         $response = $balance->deposit($request->valor);
 
@@ -44,7 +47,8 @@ class BalanceController extends Controller
         return view('admin.balance.withdraw', compact('amount'));
     }
 
-    public function withdrawStore(MoneyValidationFormRequest $request){
+    public function withdrawStore(MoneyValidationFormRequest $request)
+    {
         $balance = auth()->user()->balance()->firstOrCreate([]);
         $response = $balance->withdraw($request->valor);
 
@@ -103,13 +107,27 @@ class BalanceController extends Controller
                     ->with('error', $response['message']);
     }
 
-    public function historic()
+    public function historic(Historic $historic)
     {
         $historics = auth()->user()
                                 ->historics()
                                 ->with(['userSender'])
                                 ->paginate($this->totalPaginacao);
-        return view('admin.balance.historics', compact('historics'));
+
+        $types = $historic->type();
+
+        return view('admin.balance.historics', compact('historics', 'types'));
+    }
+
+    public function searchHistoric(Request $request, Historic $historic)
+    {
+        $dataForm = $request->all();
+
+        $historics = $historic->search($dataForm, $this->totalPaginacao);
+
+        $types = $historic->type();
+
+        return view('admin.balance.historics', compact('historics', 'types'));
     }
 
 }

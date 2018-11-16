@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +9,8 @@ class Balance extends Model
 {
     public $timestamps = false;
 
-    public function deposit($valor) : array {
+    public function deposit($valor) : array 
+    {
 
         DB::beginTransaction();        
 
@@ -26,7 +26,7 @@ class Balance extends Model
             'date'          => date('Ymd'),
         ]);
 
-        if($deposit && $historic){
+        if ($deposit && $historic) {
             
             DB::commit();
 
@@ -43,7 +43,6 @@ class Balance extends Model
                 'success' => false,
                 'message' => 'falha em depositar'
             ];
-
         }
     }
 
@@ -70,7 +69,7 @@ class Balance extends Model
             'date'          => date('Ymd'),
         ]);
 
-        if($withdraw && $historic){
+        if ($withdraw && $historic) {
             
             DB::commit();
 
@@ -130,7 +129,7 @@ class Balance extends Model
             'user_id_transaction'   => auth()->user()->id,
         ]);
 
-        if($transfer && $historic && $transferSender && $historicSender){
+        if ($transfer && $historic && $transferSender && $historicSender) {
             
             DB::commit();
 
@@ -147,7 +146,5 @@ class Balance extends Model
             'success' => false,
             'message' => 'falha na transferencia'
         ];
-
     }
-
 }

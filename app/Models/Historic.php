@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -48,5 +47,20 @@ class Historic extends Model
         return Carbon::parse($date)->format('d/m/Y');
     }
 
+    public function search(Array $data, $totalPaginas)
+    {
+        return $this->where(function ($query) use ($data){
+            if (isset($data['id']))
+                $query->where('id', $data['id']);
+            
+            if (isset($data['date']))
+                $query->where('date', $data['date']);
+
+            if (isset($data['type']))
+                $query->where('type', $data['type']);
+
+
+        })->paginate($totalPaginas);
+    }
 
 }
