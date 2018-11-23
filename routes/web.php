@@ -16,5 +16,6 @@ Route::group(['middleware' => ['auth'], 'namespace' => 'Admin', 'prefix' => 'adm
 
 Route::get('/', 'Site\SiteController@index')->name('home');
 
-Auth::routes();
+Route::get('meu-perfil', 'Admin\UserController@profile')->name('profile')->middleware('auth');
 
+Auth::routes();

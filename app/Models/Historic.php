@@ -14,6 +14,11 @@ class Historic extends Model
      */
     protected $fillable = ['type', 'amount', 'total_before', 'total_after', 'user_id_transaction', 'date',];
     
+    public function scopeUserAuth($query)
+    {
+        return $query->where('user_id', auth()->user()->id);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -49,7 +54,7 @@ class Historic extends Model
 
     public function search(Array $data, $totalPaginas)
     {
-        return $this->where(function ($query) use ($data){
+        return $this->where(function ($query) use ($data) {
             if (isset($data['id']))
                 $query->where('id', $data['id']);
             
@@ -59,8 +64,10 @@ class Historic extends Model
             if (isset($data['type']))
                 $query->where('type', $data['type']);
 
-
-        })->paginate($totalPaginas);
+        })
+        ->userAuth() // chamando metodo scopeUserAuth, mas nao precisa usar a palavra SCOPE
+        ->with('userSender')
+        ->paginate($totalPaginas);
     }
 
 }
