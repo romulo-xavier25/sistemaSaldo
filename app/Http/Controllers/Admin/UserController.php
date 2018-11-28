@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Http\Requests\UpdateProfileFormRequest;
 
 class UserController extends Controller
 {
@@ -13,7 +13,7 @@ class UserController extends Controller
         return view('site.profile.profile');
     }
 
-    public function profileUpdate(Request $request)
+    public function profileUpdate(UpdateProfileFormRequest $request)
     {
         $user = auth()->user();
         $data = $request->all();
@@ -28,8 +28,9 @@ class UserController extends Controller
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             if ($user->image) {
                 $name = $user->image;
+                unlink(storage_path('app/public/users/'.$name));
             } else {
-                $name = $user->id.kebab_case($user->name);
+                $name = $user->id.'-'.kebab_case($user->name);
             }
             $extension = $request->image->extension();
             $nameFile = "{$name}.{$extension}";

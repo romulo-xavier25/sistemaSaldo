@@ -6,17 +6,7 @@
 
     <h1>Meu perfil</h1>
 
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-@endif
-
-@if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-@endif
+@include('admin.includes.alerts')
 
     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
         {!! csrf_field() !!}
@@ -36,6 +26,10 @@
         </div>
 
         <div class="form-group btnFile">
+            @if (auth()->user()->image != null)
+                <img src="{{ url('storage/users/'.auth()->user()->image) }}" alt="{{auth()->user()->image}}">
+            @endif
+
             <label for="image">imagem</label>
             <input type="file" name="image" class="form-control">
         </div>
