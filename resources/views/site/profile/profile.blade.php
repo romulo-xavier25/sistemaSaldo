@@ -6,7 +6,19 @@
 
     <h1>Meu perfil</h1>
 
-    <form action="{{ route('profile.update') }}" method="POST">
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
         {!! csrf_field() !!}
         <div class="form-group">
             <label for="name">nome</label>
